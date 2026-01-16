@@ -1,0 +1,48 @@
+# SENTRY-Lite-2 Default Configuration
+# IEEE TWC Paper Settings
+
+# System Parameters (6G-aligned)
+system:
+  tti_ms: 0.125          # TTI duration (ms) - 6G mini-slot
+  deadline_ms: 0.5       # Default deadline (ms)
+  load: 0.85             # Default load (ρ)
+
+# Service Capacities
+service:
+  s_base: 4              # BASE mode capacity (packets/TTI)
+  s_boost: 10            # BOOST mode capacity (packets/TTI)
+
+# Controller Parameters (SENTRY-Lite-2)
+controller:
+  q_low: 6               # Queue safety threshold
+  q_crit: 15             # Critical queue (emergency trigger)
+  counter: 2             # Consecutive confirmation TTIs
+  theta_up: 0.50         # Safe exit threshold
+  theta_down: 0.25       # Entry threshold
+  emergency_duration: 5  # Emergency latch duration (TTIs)
+  cooldown: 1            # Cooldown duration (TTIs)
+  ewma_alpha: 0.20       # EWMA smoothing factor
+  miss_threshold: 0.02   # Emergency trigger threshold
+
+# Traffic Model (Markov-modulated)
+traffic:
+  burst_multiplier: 3.0  # Spike multiplier in bad state
+  p_good_to_bad: 0.05    # Transition probability
+  p_bad_to_good: 0.30    # Transition probability
+
+# Simulation Settings
+simulation:
+  episode_length: 100000 # TTIs per episode
+  n_seeds: 20            # Number of random seeds
+  seed_start: 0          # Starting seed
+
+# Deployability Budget
+deployability:
+  max_switches_per_ktti: 50  # Maximum acceptable switching rate
+
+# Wireless Channel (for W1 experiments)
+wireless:
+  channel_model: "rayleigh"  # awgn, rayleigh, rician
+  snr_db: 20.0               # Average SNR (dB)
+  rician_k: 3.0              # Rician K-factor
+  doppler_hz: 10.0           # Doppler spread (Hz)
