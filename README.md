@@ -124,12 +124,17 @@ python experiments/sensitivity_analysis.py
 
 ### Pre-generated Figures
 
-| File | Paper Reference |
-|------|-----------------|
-| `operational_envelope.png/pdf` | Fig. 5 |
-| `operational_pareto.png/pdf` | Fig. 3 |
-| `sensitivity_energy_savings.png/pdf` | Fig. 4 |
-| `controller_comparison_bars.png/pdf` | Baseline comparison |
+#### Fig. 3: Pareto Frontier (Energy-Stability Trade-off)
+![Pareto Frontier](experiments/results/operational_pareto.png)
+
+#### Fig. 4: Parameter Sensitivity Analysis
+![Sensitivity Analysis](experiments/results/sensitivity_energy_savings.png)
+
+#### Fig. 5: Operational Envelope
+![Operational Envelope](experiments/results/operational_envelope.png)
+
+#### Baseline Controller Comparison
+![Controller Comparison](experiments/results/controller_comparison_bars.png)
 
 
 ## Controller Parameters (Table I in paper)
