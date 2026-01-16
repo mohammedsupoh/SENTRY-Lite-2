@@ -199,6 +199,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Mohammed Supoh - mohammed.supoh7@gmail.com
+Mohammed Supoh - mohammed.sopuh7@gmail.com
 
 ORCID: [0009-0001-0381-9068](https://orcid.org/0009-0001-0381-9068)
