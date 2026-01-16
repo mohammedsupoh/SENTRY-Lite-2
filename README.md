@@ -160,6 +160,18 @@ python experiments/sensitivity_analysis.py
 - All experiments use **fixed random seeds** (seeds 0-19 for 20-seed runs)
 - Results are stochastic; qualitative properties (URLLC compliance, deployability) are preserved
 - Expected runtime: ~2-5 minutes per experiment on standard hardware
+- All claims are bounded to the tested parameter ranges documented in configs
+
+## Additional Documentation
+
+For detailed methodology and robustness extensions, see:
+
+| Document | Description |
+|----------|-------------|
+| [docs/README.md](docs/README.md) | Documentation index |
+| [ROBUSTNESS_VALIDATION.md](ROBUSTNESS_VALIDATION.md) | Validation plan overview |
+| [docs/methods/](docs/methods/) | Statistical methodology |
+| [docs/robustness-extensions/](docs/robustness-extensions/) | Extension details |
 
 ## Citation
 
