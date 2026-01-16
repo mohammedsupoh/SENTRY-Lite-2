@@ -40,8 +40,7 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Results (keep structure, ignore large files)
-experiments/results/*.csv
+# Results (keep CSV for reproducibility)
 !experiments/results/.gitkeep
 
 # Logs

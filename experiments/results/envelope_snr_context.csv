@@ -1,0 +1,6 @@
+SNR_avg_dB,AWGN_CQI,Rayleigh_CQI_median,Rayleigh_CQI_range,Rician_CQI_median,Rician_CQI_range
+15,11,10,7-12,11,9-12
+18,12,12,9-14,12,10-13
+20,13,12,9-14,13,11-14
+22,14,13,10-15,14,12-15
+25,15,15,12-15,15,13-15
