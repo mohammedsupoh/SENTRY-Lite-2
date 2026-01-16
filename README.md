@@ -2,50 +2,56 @@
 
 **A Pareto-Optimal Dual-Mode Controller for Energy-Efficient URLLC Systems**
 
-[![Paper](https://img.shields.io/badge/Paper-IEEE%20TWC-blue)](https://ieeexplore.ieee.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## Overview
 
-This repository contains the simulation code and experiment scripts for the paper:
+This repository contains the simulation code and experimental results for the paper:
 
 > M. Supoh, "SENTRY-Lite-2: A Pareto-Optimal Dual-Mode Controller for Energy-Efficient URLLC Systems," *IEEE Transactions on Wireless Communications*, under review, 2025.
 
-SENTRY-Lite-2 is a lightweight UE-side dual-mode controller that achieves **84% energy savings** while maintaining URLLC compliance (P_miss < 1%) through a queue-safe exit mechanism.
+SENTRY-Lite-2 is a lightweight UE-side dual-mode controller that achieves significant energy savings while maintaining URLLC compliance through a queue-safe exit mechanism.
 
-## Key Results
+## Key Results (Reference Setting: ρ=0.85, D=0.5ms)
 
-| Metric | Value |
-|--------|-------|
-| Energy Savings (Single-UE) | 84% |
-| Miss Probability | < 0.0001% (95% CI) |
-| Switching Rate | 44 sw/kTTI |
-| Safety Margin | 11,000× below URLLC threshold |
+Reported in the paper for the single-UE reference configuration:
+
+| Metric | Reported Value |
+|--------|----------------|
+| Energy Savings | ~84% |
+| Miss Probability | <0.01% (URLLC compliant) |
+| Switching Rate | ~44 sw/kTTI |
+| Safety Margin | >10,000× below 1% threshold |
+
+*Note: Results are stochastic; exact values may vary slightly across platforms and seeds.*
 
 ## Repository Structure
 
 ```
 SENTRY-Lite-2/
 ├── src/
-│   ├── controller/
-│   │   └── sentry_lite2.py      # Main controller implementation
-│   └── environment/
-│       ├── urllc_env.py         # Base URLLC environment
-│       └── wireless_env.py      # Wireless channel models
+│   ├── controllers/
+│   │   └── cqi_adaptive_sentry.py   # Controller implementation
+│   ├── environment/
+│   │   ├── urllc_env.py             # Base URLLC environment
+│   │   └── wireless_env.py          # Wireless channel models
+│   └── agents/
+│       └── dqn_agent.py             # DQN baseline agent
 ├── experiments/
-│   ├── single_ue_validation.py  # Table II experiments
-│   ├── multi_ue_homogeneous.py  # Multi-UE experiments
-│   ├── multi_ue_heterogeneous.py
-│   ├── statistical_bounds.py    # Clopper-Pearson CI
-│   ├── operational_envelope.py  # Load-deadline sweep
-│   ├── sensitivity_analysis.py  # Parameter sensitivity
-│   └── pareto_frontier.py       # Pareto analysis
-├── results/
-│   └── (CSV outputs from experiments)
-├── figures/
-│   └── (Generated figures)
+│   ├── paper_validation_v2.py       # Main validation script
+│   ├── compare_controllers.py       # Table II experiments
+│   ├── operational_envelope.py      # Operating envelope sweep
+│   ├── sensitivity_analysis.py      # Parameter sensitivity
+│   ├── statistical_bounds.py        # Clopper-Pearson CI
+│   ├── multi_ue_experiment.py       # Multi-UE scenarios
+│   └── results/                     # All outputs (CSV + figures)
+│       ├── *.csv                    # Raw experimental data
+│       ├── *.png                    # Figure images
+│       └── *.pdf                    # Publication-quality figures
 ├── configs/
-│   └── default_config.yaml      # Default parameters
+│   └── default_config.yaml          # Default parameters
+├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
@@ -57,41 +63,81 @@ numpy >= 1.21
 pandas >= 1.3
 scipy >= 1.7
 matplotlib >= 3.4
+PyYAML >= 6.0
 ```
 
 ## Installation
 
 ```bash
-git clone https://github.com/USERNAME/SENTRY-Lite-2.git
+git clone https://github.com/mohammedsupoh/SENTRY-Lite-2.git
 cd SENTRY-Lite-2
 pip install -r requirements.txt
 ```
 
-## Quick Start
+## Quick Start (Paper Reproduction)
 
-### Run Single-UE Validation (Table II)
-
-```bash
-python experiments/single_ue_validation.py
-```
-
-### Run Statistical Bounds Analysis
+### 1. Validate SENTRY-Lite-2 (Table II reference)
 
 ```bash
-python experiments/statistical_bounds.py
+python experiments/paper_validation_v2.py
 ```
 
-### Run Operational Envelope Sweep
+**Expected output:** Energy savings ~77-84%, P_miss <0.1%, Switches ~44-51 sw/kTTI
+
+### 2. Run Controller Comparison (Table II)
+
+```bash
+python experiments/compare_controllers.py
+```
+
+### 3. Generate Operating Envelope (Fig. 5)
 
 ```bash
 python experiments/operational_envelope.py
 ```
 
-## Controller Parameters
+### 4. Run Sensitivity Analysis (Fig. 4)
+
+```bash
+python experiments/sensitivity_analysis.py
+```
+
+## Output Location
+
+**All outputs are in `experiments/results/`:**
+
+| Output Type | Files |
+|-------------|-------|
+| CSV data | `experiments/results/*.csv` |
+| PNG figures | `experiments/results/*.png` |
+| PDF figures | `experiments/results/*.pdf` |
+
+### Pre-generated CSV Files
+
+| File | Description |
+|------|-------------|
+| `controller_comparison.csv` | Table II baseline comparison |
+| `sensitivity_analysis_full.csv` | Parameter sensitivity data |
+| `operational_envelope_data.csv` | Load-deadline sweep results |
+| `multi_ue_results.csv` | Multi-UE experiment data |
+| `lyapunov_drift_analysis.csv` | Stability analysis |
+
+### Pre-generated Figures
+
+| File | Paper Reference |
+|------|-----------------|
+| `operational_envelope.png/pdf` | Fig. 5 |
+| `operational_pareto.png/pdf` | Fig. 3 |
+| `sensitivity_energy_savings.png/pdf` | Fig. 4 |
+| `controller_comparison_bars.png/pdf` | Baseline comparison |
+
+
+## Controller Parameters (Table I in paper)
 
 | Parameter | Value | Description |
 |-----------|-------|-------------|
 | `q_low` | 6 packets | Queue safety threshold |
+| `q_crit` | 15 packets | Emergency trigger |
 | `counter` | 2 TTIs | Consecutive confirmation |
 | `θ_up` | 0.50 | Safe exit threshold |
 | `θ_down` | 0.25 | Entry threshold |
@@ -109,14 +155,11 @@ python experiments/operational_envelope.py
 | Deadline D | 0.5 ms (default) |
 | Load ρ | 0.85 (default) |
 
-## Reproducibility
+## Reproducibility Notes
 
-All experiments use **fixed random seeds** (0-19 for 20 seeds) to ensure reproducibility.
-
-To reproduce Table II results:
-```bash
-python experiments/single_ue_validation.py --seeds 20 --ttis 100000
-```
+- All experiments use **fixed random seeds** (seeds 0-19 for 20-seed runs)
+- Results are stochastic; qualitative properties (URLLC compliance, deployability) are preserved
+- Expected runtime: ~2-5 minutes per experiment on standard hardware
 
 ## Citation
 
@@ -139,4 +182,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Mohammed Supoh - mohammed.sopuh7@gmail.com
+Mohammed Supoh - mohammed.supoh7@gmail.com
+
+ORCID: [0009-0001-0381-9068](https://orcid.org/0009-0001-0381-9068)
